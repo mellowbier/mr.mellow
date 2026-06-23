@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ขอเพลง & ทิปนักดนตรี</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --bg-0:#1B1320;
+    --bg-1:#241A29;
+    --bg-2:#2F2233;
+    --gold:#E8A33D;
+    --gold-deep:#B97A22;
+    --coral:#D9594A;
+    --teal:#5FAE8C;
+    --cream:#F3ECE0;
+    --muted:#B6A4B4;
+    --line:rgba(243,236,224,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 50% -10%, rgba(232,163,61,0.16), transparent 55%),
+      var(--bg-0);
+    color:var(--cream);
+    font-family:'Sora',sans-serif;
+    min-height:100vh;
+    padding:32px 16px 60px;
+  }
+  .wrap{max-width:480px;margin:0 auto;}
+
+  /* ---- Header / marquee ---- */
+  .marquee{
+    text-align:center;
+    margin-bottom:28px;
+  }
+  .marquee .dots{
+    display:flex;justify-content:center;gap:6px;margin-bottom:14px;
+  }
+  .marquee .dots span{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--gold);opacity:0.35;
+  }
+  .marquee .dots span:nth-child(odd){opacity:0.8;}
+  .venue-name{
+    font-family:'Fraunces',serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:34px;
+    letter-spacing:0.5px;
+    margin:0;
+    background:linear-gradient(180deg,#F8E7C2,var(--gold));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .tagline{
+    color:var(--muted);
+    font-size:13px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin-top:6px;
+  }
+
+  /* ---- Tabs ---- */
+  .tabs{
+    display:flex;
+    background:var(--bg-1);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:4px;
+    margin-bottom:26px;
+    position:relative;
+  }
+  .tab-btn{
+    flex:1;
+    text-align:center;
+    padding:11px 0;
+    font-family:'Sora',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:var(--muted);
+    background:none;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    transition:color .25s ease;
+    position:relative;
+    z-index:2;
+  }
+  .tab-btn.active{color:#1B1320;}
+  .tab-indicator{
+    position:absolute;
+    top:4px;bottom:4px;left:4px;
+    width:calc(50% - 4px);
+    background:linear-gradient(180deg,#F2C063,var(--gold));
+    border-radius:999px;
+    transition:transform .3s cubic-bezier(.65,0,.35,1);
+    z-index:1;
+  }
+  .tab-indicator.right{transform:translateX(100%);}
+
+  .panel{display:none;}
+  .panel.active{display:block;animation:fadeUp .35s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---- Ticket card (signature element) ---- */
+  .ticket{
+    background:var(--bg-1);
+    border:1px solid var(--line);
+    border-radius:18px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:18px;
+  }
+  .ticket::before, .ticket::after{
+    content:"";
+    position:absolute;
+    width:22px;height:22px;
+    background:var(--bg-0);
+    border-radius:50%;
+    top:50%;
+    transform:translateY(-50%);
+    box-shadow:0 0 0 1px var(--line) inset;
+  }
+  .ticket::before{left:-11px;}
+  .ticket::after{right:-11px;}
+  .ticket-top{
+    padding:22px 22px 18px;
+    border-bottom:1px dashed var(--line);
+  }
+  .ticket-bottom{
+    padding:18px 22px 22px;
+  }
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:1.8px;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .field input, .field textarea{
+    width:100%;
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px 14px;
+    color:var(--cream);
+    font-family:'Sora',sans-serif;
+    font-size:15px;
+    outline:none;
+    transition:border-color .2s ease;
+  }
+  .field input:focus, .field textarea:focus{border-color:var(--gold);}
+  .field textarea{resize:none;min-height:64px;}
+
+  .btn{
+    width:100%;
+    padding:14px 0;
+    border-radius:12px;
+    border:none;
+    font-family:'Sora',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition:transform .15s ease, opacity .2s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{
+    background:linear-gradient(180deg,#F2C063,var(--gold));
+    color:#1B1320;
+  }
+  .btn-primary:disabled{opacity:0.5;cursor:not-allowed;}
+  .btn-ghost{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--cream);
+  }
+
+  .helper{font-size:12px;color:var(--muted);margin-top:8px;text-align:center;}
+
+  /* ---- Status toast ---- */
+  .status{
+    display:none;
+    align-items:center;
+    gap:10px;
+    padding:13px 16px;
+    border-radius:12px;
+    font-size:14px;
+    margin-bottom:16px;
+  }
+  .status.show{display:flex;}
+  .status.ok{background:rgba(95,174,140,0.14);border:1px solid rgba(95,174,140,0.4);color:var(--teal);}
+  .status.err{background:rgba(217,89,74,0.14);border:1px solid rgba(217,89,74,0.4);color:var(--coral);}
+  .status .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;}
+
+  /* ---- Amount chips ---- */
+  .chip-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+  .chip{
+    padding:11px 0;
+    text-align:center;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--bg-2);
+    color:var(--cream);
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .chip.active{
+    background:var(--gold);
+    color:#1B1320;
+    border-color:var(--gold);
+  }
+
+  /* ---- QR display ---- */
+  .qr-box{
+    display:none;
+    text-align:center;
+    margin:18px 0 6px;
+  }
+  .qr-box.show{display:block;animation:fadeUp .3s ease;}
+  .qr-frame{
+    display:inline-block;
+    background:#fff;
+    padding:14px;
+    border-radius:16px;
+    box-shadow:0 0 0 1px var(--line);
+  }
+  .qr-amount{
+    font-family:'Fraunces',serif;
+    font-size:28px;
+    font-weight:600;
+    color:var(--gold);
+    margin-top:14px;
+  }
+  .qr-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+
+  /* ---- Upload ---- */
+  .upload-box{
+    border:1.5px dashed var(--line);
+    border-radius:14px;
+    padding:22px 16px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .2s ease, background .2s ease;
+    margin-bottom:14px;
+  }
+  .upload-box:hover{border-color:var(--gold);}
+  .upload-box.has-file{border-color:var(--teal);background:rgba(95,174,140,0.08);}
+  .upload-icon{font-size:26px;margin-bottom:6px;color:var(--muted);}
+  .upload-text{font-size:13.5px;color:var(--muted);}
+  .upload-preview{
+    margin-top:12px;
+    max-height:160px;
+    border-radius:10px;
+    display:none;
+  }
+  .upload-preview.show{display:inline-block;max-width:100%;}
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:11.5px;
+    margin-top:34px;
+    letter-spacing:0.3px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="marquee">
+    <div class="dots"><span></span><span></span><span></span><span></span><span></span></div>
+    <h1 class="venue-name">The Velvet Room</h1>
+    <div class="tagline">ขอเพลง · ทิปนักดนตรี · สด ทุกค่ำคืน</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab-indicator" id="tabIndicator"></div>
+    <button class="tab-btn active" id="btnRequest" onclick="switchTab('request')">ขอเพลง</button>
+    <button class="tab-btn" id="btnTip" onclick="switchTab('tip')">ทิปนักดนตรี</button>
+  </div>
+
+  <!-- ===================== PANEL: SONG REQUEST ===================== -->
+  <div class="panel active" id="panelRequest">
+
+    <div class="status" id="reqStatus"><span class="dot"></span><span id="reqStatusText"></span></div>
+
+    <div class="ticket">
+      <div class="ticket-top">
+        <div class="eyebrow">บัตรขอเพลง</div>
+        <div class="field">
+          <label>ชื่อเพลง</label>
+          <input type="text" id="songName" placeholder="เช่น คนหลังเวที">
+        </div>
+        <div class="field">
+          <label>ศิลปิน (ถ้ามี)</label>
+          <input type="text" id="songArtist" placeholder="เช่น เบิร์ด ธงไชย">
+        </div>
+      </div>
+      <div class="ticket-bottom">
+        <div class="field">
+          <label>ชื่อของคุณ / โต๊ะ</label>
+          <input type="text" id="reqName" placeholder="เช่น โต๊ะ 5 - น้องมายด์">
+        </div>
+        <div class="field">
+          <label>ข้อความถึงนักดนตรี (ถ้ามี)</label>
+          <textarea id="reqNote" placeholder="เช่น ขอเพลงนี้ให้แฟนครับ 🎉"></textarea>
+        </div>
+        <button class="btn btn-primary" id="btnSendRequest" onclick="submitSongRequest()">ส่งคำขอเพลง</button>
+        <div class="helper">ทีมงานจะเห็นคำขอของคุณทันทีหลังกดส่ง</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PANEL: TIP / PAY ===================== -->
+  <div class="panel" id="panelTip">
+
+    <div class="status" id="tipStatus"><span class="dot"></span><span id="tipStatusText"></span></div>
+
+    <div class="ticket">
+      <div class="ticket-top">
+        <div class="eyebrow">เลือกจำนวนทิป</div>
+        <div class="chip-row" id="chipRow">
+          <div class="chip" data-amount="50" onclick="selectChip(this)">50</div>
+          <div class="chip" data-amount="100" onclick="selectChip(this)">100</div>
+          <div class="chip" data-amount="200" onclick="selectChip(this)">200</div>
+          <div class="chip" data-amount="500" onclick="selectChip(this)">500</div>
+        </div>
+        <div class="field">
+          <label>หรือระบุจำนวนเอง (บาท)</label>
+          <input type="number" id="customAmount" placeholder="0" min="1" oninput="onCustomAmount()">
+        </div>
+        <button class="btn btn-ghost" id="btnGenQR" onclick="generateQR()">สร้าง QR พร้อมเพย์</button>
+
+        <div class="qr-box" id="qrBox">
+          <div class="qr-frame"><div id="qrCanvas"></div></div>
+          <div class="qr-amount" id="qrAmountText">0 บาท</div>
+          <div class="qr-sub">สแกนด้วยแอปธนาคารใดก็ได้</div>
+        </div>
+      </div>
+
+      <div class="ticket-bottom">
+        <div class="eyebrow">แนบสลิปยืนยันการโอน</div>
+        <div class="upload-box" id="uploadBox" onclick="document.getElementById('slipInput').click()">
+          <div class="upload-icon">⤴</div>
+          <div class="upload-text" id="uploadText">แตะเพื่อเลือกรูปสลิป</div>
+          <img class="upload-preview" id="slipPreview">
+        </div>
+        <input type="file" id="slipInput" accept="image/*" style="display:none" onchange="onSlipSelected(event)">
+        <div class="field">
+          <label>ชื่อของคุณ / โต๊ะ (ถ้าอยากให้ทีมรู้จัก)</label>
+          <input type="text" id="tipName" placeholder="เช่น โต๊ะ 12">
+        </div>
+        <button class="btn btn-primary" id="btnSendSlip" onclick="submitTip()" disabled>ส่งสลิปยืนยันทิป</button>
+        <div class="helper">กรุณาสร้าง QR และโอนเงินก่อนแนบสลิป</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>The Velvet Room · ระบบขอเพลงและทิป · ขับเคลื่อนด้วย Google + Discord</footer>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — แก้ 2 ค่านี้ก่อนใช้งานจริง
+   ============================================================ */
+const CONFIG = {
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyTC31-qr1hEC6j2-SVdnNkVXnaskO5iXty6hdhlks4zqiyL7B3h22c7r9FHzsAGHn4/exec",
+  PROMPTPAY_ID: "0898448994" // เบอร์โทรหรือเลขบัตรประชาชนที่ผูก PromptPay (ไม่มีขีด/เว้นวรรค)
+};
+
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
+function switchTab(tab){
+  const indicator = document.getElementById('tabIndicator');
+  document.getElementById('panelRequest').classList.toggle('active', tab === 'request');
+  document.getElementById('panelTip').classList.toggle('active', tab === 'tip');
+  document.getElementById('btnRequest').classList.toggle('active', tab === 'request');
+  document.getElementById('btnTip').classList.toggle('active', tab === 'tip');
+  indicator.classList.toggle('right', tab === 'tip');
+}
+
+/* ============================================================
+   STATUS HELPER
+   ============================================================ */
+function showStatus(prefix, ok, msg){
+  const box = document.getElementById(prefix+'Status');
+  const text = document.getElementById(prefix+'StatusText');
+  box.className = 'status show ' + (ok ? 'ok' : 'err');
+  text.textContent = msg;
+}
+
+/* ============================================================
+   SONG REQUEST
+   ============================================================ */
+async function submitSongRequest(){
+  const song = document.getElementById('songName').value.trim();
+  const artist = document.getElementById('songArtist').value.trim();
+  const name = document.getElementById('reqName').value.trim();
+  const note = document.getElementById('reqNote').value.trim();
+  if(!song){ showStatus('req', false, 'กรุณากรอกชื่อเพลง'); return; }
+
+  const btn = document.getElementById('btnSendRequest');
+  btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+
+  try{
+    await fetch(CONFIG.APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'songRequest', song, artist, name, note, timestamp: new Date().toISOString() })
+    });
+    showStatus('req', true, 'ส่งคำขอเพลงสำเร็จ! ขอบคุณครับ/ค่ะ');
+    document.getElementById('songName').value='';
+    document.getElementById('songArtist').value='';
+    document.getElementById('reqNote').value='';
+  }catch(e){
+    showStatus('req', false, 'ส่งไม่สำเร็จ กรุณาลองใหม่');
+  }finally{
+    btn.disabled = false; btn.textContent = 'ส่งคำขอเพลง';
+  }
+}
+
+/* ============================================================
+   TIP AMOUNT SELECTION
+   ============================================================ */
+let selectedAmount = 0;
+function selectChip(el){
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedAmount = parseInt(el.dataset.amount, 10);
+  document.getElementById('customAmount').value = '';
+}
+function onCustomAmount(){
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  const v = parseInt(document.getElementById('customAmount').value, 10);
+  selectedAmount = isNaN(v) ? 0 : v;
+}
+
+/* ============================================================
+   PROMPTPAY QR PAYLOAD (EMV / Thai QR spec, generated locally)
+   ============================================================ */
+function tlv(id, value){
+  const len = value.length.toString().padStart(2,'0');
+  return id + len + value;
+}
+function crc16(data){
+  let crc = 0xFFFF;
+  for(let i=0;i<data.length;i++){
+    crc ^= data.charCodeAt(i) << 8;
+    for(let j=0;j<8;j++){
+      crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1);
+      crc &= 0xFFFF;
+    }
+  }
+  return crc.toString(16).toUpperCase().padStart(4,'0');
+}
+function buildPromptPayPayload(id, amount){
+  let target = id.replace(/[^0-9]/g,'');
+  let aid;
+  if(target.length === 13){ // เลขบัตรประชาชน
+    aid = tlv('01','0000000000000') ; // placeholder, replaced below properly
+  }
+  // Determine merchant account info sub-fields
+  let subId, subValue;
+  if(target.length === 10){ // เบอร์โทรศัพท์
+    subId = '01';
+    subValue = '0066' + target.substring(1); // แปลงเป็นรูปแบบ 0066XXXXXXXXX
+  } else { // เลขบัตรประชาชน 13 หลัก
+    subId = '02';
+    subValue = target;
+  }
+  const merchantAccount = tlv('00','A000000677010111') + tlv(subId, subValue);
+  let payload = '';
+  payload += tlv('00','01');                  // Payload Format Indicator
+  payload += tlv('01', amount > 0 ? '12' : '11'); // Point of Initiation Method
+  payload += tlv('29', merchantAccount);       // Merchant Account Info (PromptPay)
+  payload += tlv('53','764');                  // Currency: THB
+  if(amount > 0){
+    payload += tlv('54', amount.toFixed(2));   // Transaction Amount
+  }
+  payload += tlv('58','TH');                   // Country Code
+  payload += '6304';                            // CRC placeholder
+  const crc = crc16(payload);
+  return payload + crc;
+}
+
+function generateQR(){
+  if(selectedAmount <= 0){ showStatus('tip', false, 'กรุณาเลือกหรือกรอกจำนวนเงินก่อน'); return; }
+  const payload = buildPromptPayPayload(CONFIG.PROMPTPAY_ID, selectedAmount);
+  document.getElementById('qrCanvas').innerHTML = '';
+  new QRCode(document.getElementById('qrCanvas'), {
+    text: payload,
+    width: 200,
+    height: 200,
+    colorDark: '#1B1320',
+    colorLight: '#ffffff'
+  });
+  document.getElementById('qrAmountText').textContent = selectedAmount.toLocaleString() + ' บาท';
+  document.getElementById('qrBox').classList.add('show');
+}
+
+/* ============================================================
+   SLIP UPLOAD
+   ============================================================ */
+let slipBase64 = null;
+function onSlipSelected(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    slipBase64 = ev.target.result;
+    const preview = document.getElementById('slipPreview');
+    preview.src = slipBase64;
+    preview.classList.add('show');
+    document.getElementById('uploadBox').classList.add('has-file');
+    document.getElementById('uploadText').textContent = 'เลือกรูปแล้ว · แตะเพื่อเปลี่ยน';
+    document.getElementById('btnSendSlip').disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function submitTip(){
+  if(!slipBase64){ showStatus('tip', false, 'กรุณาแนบรูปสลิปก่อน'); return; }
+  const name = document.getElementById('tipName').value.trim();
+  const btn = document.getElementById('btnSendSlip');
+  btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+
+  try{
+    await fetch(CONFIG.APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        action:'tipPayment',
+        amount: selectedAmount,
+        name,
+        slip: slipBase64,
+        timestamp: new Date().toISOString()
+      })
+    });
+    showStatus('tip', true, 'ส่งสลิปสำเร็จ ขอบคุณสำหรับทิปครับ/ค่ะ 🎶');
+    document.getElementById('slipInput').value = '';
+    document.getElementById('slipPreview').classList.remove('show');
+    document.getElementById('uploadBox').classList.remove('has-file');
+    document.getElementById('uploadText').textContent = 'แตะเพื่อเลือกรูปสลิป';
+    slipBase64 = null;
+  }catch(e){
+    showStatus('tip', false, 'ส่งไม่สำเร็จ กรุณาลองใหม่');
+  }finally{
+    btn.disabled = true; btn.textContent = 'ส่งสลิปยืนยันทิป';
+  }
+}
+</script>
+</body>
+</html>
