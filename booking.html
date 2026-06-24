@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Velvet Room — รับงานแสดงดนตรีสด งานแต่ง & Event</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#1B1320;
+    --bg-1:#241A29;
+    --bg-2:#2F2233;
+    --gold:#E8A33D;
+    --gold-deep:#B97A22;
+    --coral:#D9594A;
+    --teal:#5FAE8C;
+    --cream:#F3ECE0;
+    --muted:#B6A4B4;
+    --line:rgba(243,236,224,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 50% -10%, rgba(232,163,61,0.16), transparent 55%),
+      var(--bg-0);
+    color:var(--cream);
+    font-family:'Sora',sans-serif;
+    min-height:100vh;
+  }
+  a{color:inherit;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 18px;}
+
+  /* ---- NAV ---- */
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 0;border-bottom:1px solid var(--line);
+    margin-bottom:8px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);}
+  .brand-name{font-family:'Fraunces',serif;font-weight:600;font-size:18px;letter-spacing:0.3px;}
+  nav .cta-mini{
+    font-size:13px;font-weight:600;color:#1B1320;
+    background:linear-gradient(180deg,#F2C063,var(--gold));
+    padding:9px 18px;border-radius:999px;text-decoration:none;
+  }
+
+  /* ---- HERO ---- */
+  .hero{
+    padding:54px 0 38px;text-align:center;position:relative;
+  }
+  .hero .dots{display:flex;justify-content:center;gap:6px;margin-bottom:16px;}
+  .hero .dots span{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:0.35;}
+  .hero .dots span:nth-child(odd){opacity:0.8;}
+  .hero h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,6vw,46px);
+    margin:0 0 14px;line-height:1.18;
+    background:linear-gradient(180deg,#F8E7C2,var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{color:var(--muted);font-size:15.5px;max-width:480px;margin:0 auto 26px;line-height:1.6;}
+  .hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    padding:13px 26px;border-radius:12px;border:none;font-weight:700;font-size:14.5px;
+    cursor:pointer;text-decoration:none;display:inline-block;transition:transform .15s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:linear-gradient(180deg,#F2C063,var(--gold));color:#1B1320;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--cream);}
+
+  /* ---- SECTION HEADERS ---- */
+  .section{padding:46px 0;}
+  .section-head{margin-bottom:22px;text-align:center;}
+  .eyebrow{font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;}
+  .section-title{font-family:'Fraunces',serif;font-weight:600;font-size:26px;margin:0;}
+
+  /* ---- VIDEO GALLERY ---- */
+  .video-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .video-card{
+    aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+    background:var(--bg-1);border:1px solid var(--line);
+    position:relative;display:flex;align-items:center;justify-content:center;
+  }
+  .video-card iframe{width:100%;height:100%;border:0;}
+  .video-placeholder{
+    text-align:center;color:var(--muted);font-size:13px;padding:0 16px;
+  }
+  .video-placeholder .play{
+    width:46px;height:46px;border-radius:50%;background:var(--gold);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 10px;
+    color:#1B1320;font-size:18px;
+  }
+
+  /* ---- PHOTO GALLERY ---- */
+  .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .photo-card{
+    aspect-ratio:1/1;border-radius:12px;
+    background:linear-gradient(135deg,var(--bg-2),var(--bg-1));
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);font-size:11.5px;text-align:center;padding:8px;
+  }
+
+  /* ---- BOOKING FORM ---- */
+  .ticket{
+    background:var(--bg-1);border:1px solid var(--line);border-radius:18px;
+    overflow:hidden;
+  }
+  .ticket-section{padding:22px;border-bottom:1px dashed var(--line);}
+  .ticket-section:last-child{border-bottom:none;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;color:var(--cream);font-family:'Sora',sans-serif;font-size:15px;
+    outline:none;transition:border-color .2s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--gold);}
+  .field textarea{resize:none;min-height:80px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  /* band type cards */
+  .pick-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .pick-card{
+    border:1.5px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;
+    transition:all .15s ease;
+  }
+  .pick-card.active{border-color:var(--gold);background:rgba(232,163,61,0.08);}
+  .pick-card .name{font-weight:700;font-size:14px;margin-bottom:3px;}
+  .pick-card .desc{font-size:12px;color:var(--muted);}
+
+  /* genre chips */
+  .chip-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .chip{
+    padding:8px 14px;border-radius:999px;border:1px solid var(--line);
+    background:var(--bg-2);font-size:13px;cursor:pointer;color:var(--cream);
+    transition:all .15s ease;
+  }
+  .chip.active{background:var(--gold);color:#1B1320;border-color:var(--gold);}
+
+  /* event type toggle */
+  .toggle-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .toggle-card{
+    text-align:center;padding:12px 0;border-radius:10px;border:1px solid var(--line);
+    background:var(--bg-2);cursor:pointer;font-weight:600;font-size:14px;transition:all .15s ease;
+  }
+  .toggle-card.active{background:var(--coral);border-color:var(--coral);color:#fff;}
+
+  .zone-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+
+  .note{
+    font-size:12.5px;padding:11px 13px;border-radius:10px;margin-top:4px;
+    display:none;
+  }
+  .note.show{display:block;}
+  .note.travel{background:rgba(217,89,74,0.12);border:1px solid rgba(217,89,74,0.35);color:var(--coral);}
+  .note.busy{background:rgba(217,89,74,0.12);border:1px solid rgba(217,89,74,0.35);color:var(--coral);}
+
+  .status{display:none;align-items:center;gap:10px;padding:13px 16px;border-radius:12px;font-size:14px;margin:0 22px 16px;}
+  .status.show{display:flex;}
+  .status.ok{background:rgba(95,174,140,0.14);border:1px solid rgba(95,174,140,0.4);color:var(--teal);}
+  .status.err{background:rgba(217,89,74,0.14);border:1px solid rgba(217,89,74,0.4);color:var(--coral);}
+  .status .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;}
+
+  .btn-submit{width:100%;}
+
+  /* ---- CONTACT ---- */
+  .contact-box{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    background:var(--bg-1);border:1px solid var(--line);border-radius:16px;padding:22px;
+  }
+  .contact-info .label{font-size:12px;color:var(--muted);margin-bottom:4px;}
+  .contact-info .phone{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--gold);}
+  .contact-info .person{font-size:13px;color:var(--muted);margin-top:2px;}
+
+  footer{text-align:center;color:var(--muted);font-size:11.5px;padding:30px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">The Velvet Room</span>
+    </div>
+    <a href="#booking" class="cta-mini">จองคิวเลย</a>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="dots"><span></span><span></span><span></span><span></span><span></span></div>
+    <h1>วงดนตรีสด<br>สำหรับงานแต่ง & Event ของคุณ</h1>
+    <p>รับงานในจังหวัดบุรีรัมย์และต่างจังหวัดใกล้เคียง พร้อมวงดนตรีคุณภาพ เลือกได้ทั้งแบบ Folk Trio และ Full Band</p>
+    <div class="hero-ctas">
+      <a href="#booking" class="btn btn-primary">สอบถาม / จองคิว</a>
+      <a href="#works" class="btn btn-ghost">ดูผลงานที่ผ่านมา</a>
+    </div>
+  </section>
+
+  <!-- ===================== PORTFOLIO: VIDEO ===================== -->
+  <section class="section" id="works">
+    <div class="section-head">
+      <div class="eyebrow">ผลงานการแสดง</div>
+      <h2 class="section-title">คลิปการเล่นสด</h2>
+    </div>
+    <div class="video-grid">
+      <!-- ตัวอย่าง placeholder — แทนที่ด้วยลิงก์ YouTube/Facebook จริงทีหลัง
+           วิธีแทนที่: เปลี่ยน div.video-placeholder เป็น
+           <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe> -->
+      <div class="video-card">
+        <div class="video-placeholder"><div class="play">►</div>คลิปตัวอย่าง — งานแต่งคุณเอ &amp; คุณบี</div>
+      </div>
+      <div class="video-card">
+        <div class="video-placeholder"><div class="play">►</div>คลิปตัวอย่าง — Event บริษัท XYZ</div>
+      </div>
+      <div class="video-card">
+        <div class="video-placeholder"><div class="play">►</div>คลิปตัวอย่าง — งานแต่งสวนกล้วย รีสอร์ท</div>
+      </div>
+      <div class="video-card">
+        <div class="video-placeholder"><div class="play">►</div>คลิปตัวอย่าง — Cover เพลงฮิตในร้าน</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PORTFOLIO: PHOTO ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="eyebrow">ภาพบรรยากาศ</div>
+      <h2 class="section-title">ออกงานที่ผ่านมา</h2>
+    </div>
+    <div class="photo-grid">
+      <!-- ตัวอย่าง placeholder — แทนที่ด้วย <img src="..."> ทีหลัง -->
+      <div class="photo-card">รูปงานแต่ง<br>โรงแรม ABC</div>
+      <div class="photo-card">รูป Event<br>บริษัท XYZ</div>
+      <div class="photo-card">รูปงานแต่ง<br>สวนกล้วยรีสอร์ท</div>
+      <div class="photo-card">รูปบรรยากาศ<br>ในร้าน</div>
+      <div class="photo-card">รูปวง Full Band<br>งานคอนเสิร์ตเล็ก</div>
+      <div class="photo-card">รูป Folk Trio<br>งานสวนอาหาร</div>
+    </div>
+  </section>
+
+  <!-- ===================== BOOKING FORM ===================== -->
+  <section class="section" id="booking">
+    <div class="section-head">
+      <div class="eyebrow">จองคิว / สอบถามรายละเอียด</div>
+      <h2 class="section-title">แจ้งความต้องการของงานคุณ</h2>
+    </div>
+
+    <div class="ticket">
+      <div class="status" id="bookStatus"><span class="dot"></span><span id="bookStatusText"></span></div>
+
+      <div class="ticket-section">
+        <div class="field">
+          <label>ชื่อผู้ติดต่อ</label>
+          <input type="text" id="bName" placeholder="ชื่อ-นามสกุล">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>เบอร์โทรติดต่อกลับ</label>
+            <input type="tel" id="bPhone" placeholder="08X-XXX-XXXX">
+          </div>
+          <div class="field">
+            <label>LINE ID (ถ้ามี)</label>
+            <input type="text" id="bLine" placeholder="ไม่บังคับ">
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket-section">
+        <div class="field"><label>ประเภทวงที่ต้องการ</label></div>
+        <div class="pick-row" id="bandRow">
+          <div class="pick-card active" data-band="Folk Trio" onclick="selectBand(this)">
+            <div class="name">Folk Trio</div>
+            <div class="desc">กีตาร์ · ร้อง · กลอง (3 คน)</div>
+          </div>
+          <div class="pick-card" data-band="Full Band" onclick="selectBand(this)">
+            <div class="name">Full Band</div>
+            <div class="desc">กีตาร์ · ร้อง · เบส · กลอง</div>
+          </div>
+        </div>
+
+        <div class="field"><label>แนวเพลงที่ต้องการ (เลือกได้หลายอย่าง)</label></div>
+        <div class="chip-wrap" id="genreWrap">
+          <div class="chip" onclick="toggleChip(this)">ลูกทุ่ง</div>
+          <div class="chip" onclick="toggleChip(this)">สตริง / ป๊อป</div>
+          <div class="chip" onclick="toggleChip(this)">เพื่อชีวิต</div>
+          <div class="chip" onclick="toggleChip(this)">อคูสติก ชิลล์ๆ</div>
+          <div class="chip" onclick="toggleChip(this)">สากล / Cover ฮิต</div>
+          <div class="chip" onclick="toggleChip(this)">หมอลำ / อีสาน</div>
+        </div>
+
+        <div class="field"><label>ประเภทงาน</label></div>
+        <div class="toggle-row" id="eventTypeRow">
+          <div class="toggle-card active" data-type="งานแต่ง" onclick="selectEventType(this)">💍 งานแต่ง</div>
+          <div class="toggle-card" data-type="Event ทั่วไป" onclick="selectEventType(this)">🎤 Event ทั่วไป</div>
+        </div>
+      </div>
+
+      <div class="ticket-section">
+        <div class="row2">
+          <div class="field">
+            <label>วันที่จัดงาน</label>
+            <input type="date" id="bDate" onchange="checkDateAvailability()">
+          </div>
+          <div class="field">
+            <label>โซนสถานที่จัดงาน</label>
+            <select id="bZone" onchange="onZoneChange()">
+              <option value="in">ในเขตอำเภอเมืองบุรีรัมย์</option>
+              <option value="out">นอกเขตอำเภอเมือง / ต่างจังหวัด</option>
+            </select>
+          </div>
+        </div>
+        <div class="note busy" id="dateNote">⚠️ วันที่เลือกอาจไม่ว่าง ทีมงานจะติดต่อยืนยันคิวกับคุณอีกครั้ง</div>
+        <div class="note travel" id="travelNote">🚗 มีค่าเดินทางเพิ่มเติม จะแจ้งราคาให้ทราบหลังติดต่อกลับ</div>
+
+        <div class="field" style="margin-top:14px;">
+          <label>สถานที่จัดงาน (ชื่อสถานที่ / อำเภอ / จังหวัด)</label>
+          <input type="text" id="bLocation" placeholder="เช่น โรงแรม ABC อำเภอเมือง บุรีรัมย์">
+        </div>
+        <div class="field">
+          <label>รายละเอียดเพิ่มเติม (ถ้ามี)</label>
+          <textarea id="bDetail" placeholder="เช่น เวลาจัดงาน จำนวนแขก เพลงพิเศษที่อยากให้เล่น"></textarea>
+        </div>
+
+        <button class="btn btn-primary btn-submit" id="btnSubmitBooking" onclick="submitBooking()">ส่งคำขอจองคิว</button>
+        <div class="helper" style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center;">ทีมงานจะติดต่อกลับเพื่อยืนยันรายละเอียดและราคาภายใน 24 ชม.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section">
+    <div class="contact-box">
+      <div class="contact-info">
+        <div class="label">สอบถามด่วน โทรเลย</div>
+        <div class="phone">092-292-9961</div>
+        <div class="person">คุณเบียร์</div>
+      </div>
+      <a href="tel:0922929961" class="btn btn-primary">โทรเลย</a>
+    </div>
+  </section>
+
+  <footer>The Velvet Room · รับงานแสดงดนตรีสด งานแต่ง &amp; Event ทั่วบุรีรัมย์และต่างจังหวัด</footer>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — แก้ค่านี้ก่อนใช้งานจริง
+   ============================================================ */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec";
+
+/* ============================================================
+   BAND / GENRE / EVENT TYPE SELECTION
+   ============================================================ */
+let selectedBand = "Folk Trio";
+function selectBand(el){
+  document.querySelectorAll('#bandRow .pick-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedBand = el.dataset.band;
+}
+
+function toggleChip(el){
+  el.classList.toggle('active');
+}
+function getSelectedGenres(){
+  return Array.from(document.querySelectorAll('#genreWrap .chip.active')).map(c => c.textContent.trim());
+}
+
+let selectedEventType = "งานแต่ง";
+function selectEventType(el){
+  document.querySelectorAll('#eventTypeRow .toggle-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedEventType = el.dataset.type;
+}
+
+function onZoneChange(){
+  const zone = document.getElementById('bZone').value;
+  document.getElementById('travelNote').classList.toggle('show', zone === 'out');
+}
+
+/* ============================================================
+   เช็ควันที่ไม่ว่าง — ดึงรายการจาก Apps Script (GET)
+   ============================================================ */
+let blockedDatesCache = null;
+async function fetchBlockedDates(){
+  if(blockedDatesCache) return blockedDatesCache;
+  try{
+    const res = await fetch(APPS_SCRIPT_URL + "?action=blockedDates");
+    const data = await res.json();
+    blockedDatesCache = data.dates || [];
+  }catch(e){
+    blockedDatesCache = [];
+  }
+  return blockedDatesCache;
+}
+async function checkDateAvailability(){
+  const date = document.getElementById('bDate').value;
+  const note = document.getElementById('dateNote');
+  if(!date){ note.classList.remove('show'); return; }
+  const blocked = await fetchBlockedDates();
+  note.classList.toggle('show', blocked.includes(date));
+}
+
+/* ============================================================
+   STATUS HELPER
+   ============================================================ */
+function showStatus(ok, msg){
+  const box = document.getElementById('bookStatus');
+  const text = document.getElementById('bookStatusText');
+  box.className = 'status show ' + (ok ? 'ok' : 'err');
+  text.textContent = msg;
+}
+
+/* ============================================================
+   SUBMIT BOOKING
+   ============================================================ */
+async function submitBooking(){
+  const name = document.getElementById('bName').value.trim();
+  const phone = document.getElementById('bPhone').value.trim();
+  const line = document.getElementById('bLine').value.trim();
+  const date = document.getElementById('bDate').value;
+  const zone = document.getElementById('bZone').value === 'out' ? 'นอกเขตอำเภอเมือง / ต่างจังหวัด' : 'ในเขตอำเภอเมืองบุรีรัมย์';
+  const location = document.getElementById('bLocation').value.trim();
+  const detail = document.getElementById('bDetail').value.trim();
+  const genres = getSelectedGenres();
+
+  if(!name || !phone){ showStatus(false, 'กรุณากรอกชื่อและเบอร์โทรติดต่อกลับ'); return; }
+  if(!date){ showStatus(false, 'กรุณาเลือกวันที่จัดงาน'); return; }
+  if(!location){ showStatus(false, 'กรุณากรอกสถานที่จัดงาน'); return; }
+
+  const btn = document.getElementById('btnSubmitBooking');
+  btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+
+  try{
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        action: 'booking',
+        name, phone, line,
+        band: selectedBand,
+        genres: genres.join(', '),
+        eventType: selectedEventType,
+        date, zone, location, detail,
+        timestamp: new Date().toISOString()
+      })
+    });
+    showStatus(true, 'ส่งคำขอจองคิวสำเร็จ! ทีมงานจะติดต่อกลับโดยเร็วที่สุด');
+    document.querySelectorAll('#booking input, #booking textarea').forEach(el => el.value = '');
+    document.getElementById('travelNote').classList.remove('show');
+    document.getElementById('dateNote').classList.remove('show');
+  }catch(e){
+    showStatus(false, 'ส่งไม่สำเร็จ กรุณาลองใหม่ หรือโทร 092-292-9961');
+  }finally{
+    btn.disabled = false; btn.textContent = 'ส่งคำขอจองคิว';
+  }
+}
+</script>
+</body>
+</html>
